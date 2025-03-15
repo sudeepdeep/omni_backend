@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import moment from 'moment';
 import { Model } from 'mongoose';
 import { News } from 'src/schema/news.schema';
 
@@ -19,6 +20,9 @@ export class NewsService {
       subCategory: data.subCategory,
       author: data.author || 'Anonymous',
       imageUrl: data.imageUrl || [],
+      publishedDate: moment().format('YYYY-MM-DD'),
+      createdAt: moment().format('YYYY-MM-DD'),
+      modifiedAt: moment().format('YYYY-MM-DD'),
     });
 
     return await news.save();
