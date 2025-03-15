@@ -1,23 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 
 @Schema()
-export class TenantId extends Document {
-  @Prop({ required: true })
-  tenantId: string;
-
-  @Prop({ required: true })
-  tenantName: string;
-
-  @Prop({ required: true })
-  tenantAddress: string;
-}
-
-export const TenantIdSchema = SchemaFactory.createForClass(TenantId);
-
-@Schema()
 export class User {
+  @Prop({ required: true })
+  firstName: string;
+
+  @Prop({ required: true })
+  lastName: string;
+
   @Prop({ required: true, unique: true })
   username: string;
 
@@ -34,19 +25,28 @@ export class User {
   userType: string;
 
   @Prop()
+  role: string;
+
+  @Prop()
+  dateOfJoin: string;
+
+  @Prop()
+  companyName: string;
+
+  @Prop()
   address: string;
 
   @Prop()
-  aadharNumber: string;
+  verified: string;
+
+  @Prop()
+  licenseNo: string;
 
   @Prop()
   phoneNumber: string;
 
   @Prop()
-  employeeId: string;
-
-  @Prop({ type: [TenantIdSchema], default: [] })
-  tenantIds: TenantId[];
+  bio: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
