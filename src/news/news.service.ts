@@ -52,6 +52,26 @@ export class NewsService {
         { content: { $regex: filter.search, $options: 'i' } },
       ];
     }
+
+    const limit = parseInt(filter.limit) || 10; // Default limit: 10
+    const offset = parseInt(filter.offset) || 0; // Default offset: 0
+
+    const totalCount = await this.model.countDocuments(query); // Get total count
+
+    const news = await this.model
+      .find(query)
+      .sort({ createdAt: -1 }) // Sort by newest first
+      .skip(offset)
+      .limit(limit)
+      .exec();
+
+    return {
+      total: totalCount,
+      count: news.length,
+      limit,
+      offset,
+      results: news,
+    };
     return await this.model.find(query).sort({ createdAt: -1 }).exec();
   }
 
