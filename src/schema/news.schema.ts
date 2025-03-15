@@ -4,6 +4,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 export class News {
   @Prop({
     required: true,
+    type: [String],
     enum: [
       'local',
       'state',
@@ -44,6 +45,7 @@ export class News {
 
   @Prop({
     required: true,
+    type: [String],
     enum: [
       'breaking', // Urgent and major news happening now
       'trending', // Popular and viral news
