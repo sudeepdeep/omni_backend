@@ -66,22 +66,22 @@ export class News {
   content: string;
 
   @Prop()
-  publishedDate: string;
+  publishedDate?: string;
 
-  @Prop()
-  imageUrl: string[];
+  @Prop({ default: [] })
+  imageUrl?: string[];
 
   @Prop({ default: 'Anonymous' })
-  author: string;
+  author?: string;
 
   @Prop()
-  authorId: string;
+  authorId?: string;
 
   @Prop()
-  createdAt: string;
+  createdAt?: Date;
 
   @Prop()
-  modifiedAt: string;
+  modifiedAt?: Date;
 }
 
 export const NewsSchema = SchemaFactory.createForClass(News);
