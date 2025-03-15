@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { NewsService } from './news.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 
@@ -13,8 +21,27 @@ export class NewsController {
   }
 
   @Get()
-  async getNews(@Param() param: any) {
-    return await this.newsService.getNews(param);
+  async getNews(
+    @Query('category') category?: any,
+    @Query('author') author?: string,
+    @Query('subCategory') subCategory?: any,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+    @Query('search') search?: string,
+    @Query('limit') limit?: string,
+    @Query('offset') offset?: string,
+  ) {
+    const filters: any = {
+      category,
+      author,
+      subCategory,
+      startDate,
+      endDate,
+      search,
+      limit,
+      offset,
+    };
+    return await this.newsService.getNews(filters);
   }
 
   @Get(':authorId/author')
