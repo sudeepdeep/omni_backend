@@ -19,6 +19,7 @@ export class NewsService {
       category: data.category,
       subCategory: data.subCategory,
       author: data.author || 'Anonymous',
+      authorId: data.authorId || '',
       imageUrl: data.imageUrl || [],
       publishedDate: moment().format('YYYY-MM-DD'),
       createdAt: moment().format('YYYY-MM-DD'),
