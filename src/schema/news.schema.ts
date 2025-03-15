@@ -40,7 +40,7 @@ export class News {
       'application',
     ],
   })
-  category: string;
+  category: string[];
 
   @Prop({
     required: true,
@@ -57,7 +57,7 @@ export class News {
       'special-report', // Detailed coverage on major topics
     ],
   })
-  subCategory: string;
+  subCategory: string[];
 
   @Prop({ required: true, trim: true })
   title: string;
