@@ -7,6 +7,8 @@ import { mongoCredentials } from 'mongooseCredentials';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
+import { User, UserSchema } from './schema/user.schema';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -15,9 +17,8 @@ import { AuthModule } from './auth/auth.module';
       autoIndex: true,
     }),
     AuthModule,
-    // MongooseModule.forFeature([
-    //   { name: User.name, schema: UserSchema }
-    // ]),
+    UserModule,
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],
