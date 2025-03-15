@@ -3,8 +3,8 @@ import { LoginDto } from './dto/auth.dto';
 import * as bcrypt from 'bcryptjs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IUser } from 'src/user/interface/user.interface';
-import { User } from 'src/schema/user.schema';
+import { IUser } from '../user/interface/user.interface';
+import { User } from '../schema/user.schema';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

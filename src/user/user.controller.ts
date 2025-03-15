@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dtos/user.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
@@ -58,11 +58,6 @@ export class UserController {
   @Get(':username/check-username')
   async checkUsername(@Param('username') username: string) {
     return this.userService.checkUsername(username);
-  }
-
-  @Get(':userId/:friendId/check-message-id')
-  async checkMessageId(@Param() param: any) {
-    return await this.userService.checkUserMessageId(param);
   }
 
   @Put(':userId/:friendId/un-follow')

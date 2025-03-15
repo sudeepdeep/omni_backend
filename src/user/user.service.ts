@@ -1,21 +1,14 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dtos/user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from 'src/schema/user.schema';
+import { User } from '../schema/user.schema';
 import { Model } from 'mongoose';
 import { IUser } from './interface/user.interface';
-import { Post } from 'src/schema/post.schema';
 import * as admin from 'firebase-admin';
-import { Message, Messages } from 'src/schema/message.schema';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel(User.name) private readonly model: Model<IUser>,
-    @InjectModel(Post.name) private readonly postModel: Model<Post>,
-    @InjectModel(Message.name) private readonly messageModel: Model<Message>,
-    @InjectModel(Messages.name) private readonly messagesModel: Model<Messages>,
-  ) {}
+  constructor(@InjectModel(User.name) private readonly model: Model<IUser>) {}
   async createUser(data: CreateUserDto) {
     const existingUser = await this.model.findOne({
       username: data.username,
@@ -54,49 +47,12 @@ export class UserService {
     if (!user) {
       throw new UnprocessableEntityException('User not found');
     }
-    const postsCount = await this.postModel
-      .find({ createdById: user._id })
-      .count();
 
     const data = {
       user,
-      postsCount: postsCount,
     };
 
     return data;
-  }
-
-  async checkUserMessageId({ userId, friendId }): Promise<any> {
-    const user = await this.model.findOne({ _id: userId });
-    const friend = await this.model.findOne({ _id: friendId });
-
-    if (
-      user?.messageIds.find((msg) => msg.userId == friendId) &&
-      friend.messageIds.find((msg) => msg.userId == userId)
-    ) {
-      const messageId = user.messageIds.find((msg) => msg.userId == friendId);
-      return messageId;
-    } else {
-      const messageBody = {
-        userId: friendId,
-        messageId: Math.floor(Math.random() * 10000),
-      };
-      const friendBody = {
-        userId: userId,
-        messageId: messageBody.messageId,
-      };
-      user.messageIds.push(messageBody);
-      friend.messageIds.push(friendBody);
-      await user.save();
-      await friend.save();
-
-      const msgs = await this.messageModel.create({
-        messageId: messageBody.messageId,
-        messages: [],
-      });
-
-      return msgs;
-    }
   }
 
   async uploadProfilePicture(file, id) {
@@ -137,19 +93,7 @@ export class UserService {
       _id: { $ne: param.id },
       username: { $regex: query.search, $options: 'i' },
     });
-    const data = await Promise.all(
-      users.map(async (user) => {
-        const postsCount = await this.postModel
-          .find({ createdById: user._id })
-          .count();
-
-        return {
-          user,
-          postsCount: postsCount,
-        };
-      }),
-    );
-    return data;
+    return users;
   }
 
   async unfollowUser(data) {
@@ -173,13 +117,6 @@ export class UserService {
     const user = await this.model.findOne({ _id: props.id });
     if (!user) {
       throw new UnprocessableEntityException(`User Not Found`);
-    }
-
-    if (props.body.following) {
-      await this.model.findByIdAndUpdate(
-        { _id: props.body.following[0] },
-        { $push: { followers: user._id } },
-      );
     }
 
     await this.model.findByIdAndUpdate(props.id, props.body, { new: true });
