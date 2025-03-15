@@ -9,6 +9,8 @@ import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { User, UserSchema } from './schema/user.schema';
 import { UserModule } from './user/user.module';
+import { NewsModule } from './news/news.module';
+import { News, NewsSchema } from './schema/news.schema';
 
 @Module({
   imports: [
@@ -18,7 +20,11 @@ import { UserModule } from './user/user.module';
     }),
     AuthModule,
     UserModule,
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: News.name, schema: NewsSchema },
+    ]),
+    NewsModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],
