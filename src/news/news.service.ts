@@ -27,16 +27,26 @@ export class NewsService {
   async getNews(filter: any) {
     const query: any = {};
 
+    // Filter for category (Stored as an array, use $in to match any)
     if (filter.category) {
-      query.category = filter.category;
+      query.category = {
+        $in: Array.isArray(filter.category)
+          ? filter.category
+          : [filter.category],
+      };
+    }
+
+    // Filter for subCategory (Stored as an array, use $in to match any)
+    if (filter.subCategory) {
+      query.subCategory = {
+        $in: Array.isArray(filter.subCategory)
+          ? filter.subCategory
+          : [filter.subCategory],
+      };
     }
 
     if (filter.author) {
       query.author = { $regex: filter.author, $options: 'i' }; // Case-insensitive search
-    }
-
-    if (filter.subCategory) {
-      query.subCategory = filter.subCategory;
     }
 
     if (filter.startDate && filter.endDate) {
