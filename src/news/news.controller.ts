@@ -11,15 +11,13 @@ import { NewsService } from './news.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('news')
-@UseGuards(AuthGuard)
 export class NewsController {
   constructor(private readonly newsService: NewsService) {}
-
+  @UseGuards(AuthGuard)
   @Post()
   async createNews(@Body() data: any) {
     return await this.newsService.createNews(data);
   }
-
   @Get()
   async getNews(
     @Query('category') category?: any,
@@ -43,7 +41,6 @@ export class NewsController {
     };
     return await this.newsService.getNews(filters);
   }
-
   @Get(':authorId/author')
   async getNewsByAuthorId(@Param('authorId') authorId: string) {
     return await this.newsService.getNewsByAuthorId(authorId);
