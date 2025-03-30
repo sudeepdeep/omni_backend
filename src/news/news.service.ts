@@ -75,6 +75,10 @@ export class NewsService {
 
     const news = await this.model
       .find(query)
+      .populate({
+        path: 'authorId',
+        select: 'username email firstName lastName profileUrl role',
+      })
       .sort({ createdAt: -1 }) // Sort by newest first
       .skip(offset)
       .limit(limit)

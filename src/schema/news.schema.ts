@@ -1,4 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
+import { User } from './user.schema';
+import { Type } from 'class-transformer';
 
 @Schema()
 export class News {
@@ -76,8 +79,11 @@ export class News {
   @Prop({ default: 'Anonymous' })
   author?: string;
 
-  @Prop()
-  authorId?: string;
+  @Prop({ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User' 
+  })
+  authorId?: mongoose.Schema.Types.ObjectId;
 
   @Prop()
   createdAt?: Date;
@@ -88,4 +94,13 @@ export class News {
 
 export const NewsSchema = SchemaFactory.createForClass(News);
 
-NewsSchema.index({ username: 'text' });
+NewsSchema.virtual('authorDetails', {
+  ref: 'User',
+  localField: 'authorId',
+  foreignField: '_id',
+  justOne: true
+});
+
+NewsSchema.index({ category: 1 });
+NewsSchema.index({ subCategory: 1 });
+NewsSchema.index({ publishedDate: -1 });
