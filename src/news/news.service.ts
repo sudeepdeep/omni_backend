@@ -100,7 +100,13 @@ export class NewsService {
   }
 
   async getNewsByNewsId(newsId: any) {
-    const news = await this.model.findOne({ _id: newsId });
+    const news = await this.model
+      .findOne({ _id: newsId })
+      .populate({
+        path: 'authorId',
+        select: 'username email firstName lastName profileUrl role',
+      })
+      .exec();
 
     return news;
   }
