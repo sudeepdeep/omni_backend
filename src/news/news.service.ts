@@ -21,6 +21,7 @@ export class NewsService {
       author: data.author || 'Anonymous',
       authorId: data.authorId || '',
       imageUrl: data.imageUrl || [],
+      isArchived: 'false',
       publishedDate: moment().format('YYYY-MM-DD:HH:mm:ss'),
       createdAt: moment().format('YYYY-MM-DD:HH:mm:ss'),
       modifiedAt: moment().format('YYYY-MM-DD:HH:mm:ss'),
