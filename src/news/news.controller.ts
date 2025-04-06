@@ -32,14 +32,12 @@ export class NewsController {
     return await this.newsService.editNews(_id, updateData);
   }
 
-  @Delete()
-  async deleteNews(@Body() data: any) {
-    const { _id } = data;
-
-    if (!_id) {
+  @Delete(':id/news')
+  async deleteNews(@Param('id') id: string) {
+    if (!id) {
       throw new Error('newsId is required for deletion.');
     }
-    return await this.newsService.deleteNews(_id);
+    return await this.newsService.deleteNews(id);
   }
 
   @Get()
