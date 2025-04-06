@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -18,6 +20,28 @@ export class NewsController {
   async createNews(@Body() data: any) {
     return await this.newsService.createNews(data);
   }
+
+  @Put()
+  async editNews(@Body() data: any) {
+    const { _id, ...updateData } = data;
+
+    if (!_id) {
+      throw new Error('NewsId is required');
+    }
+
+    return await this.newsService.editNews(_id, updateData);
+  }
+
+  @Delete()
+  async deleteNews(@Body() data: any) {
+    const { _id } = data;
+
+    if (!_id) {
+      throw new Error('newsId is required for deletion.');
+    }
+    return await this.newsService.deleteNews(_id);
+  }
+
   @Get()
   async getNews(
     @Query('category') category?: any,
@@ -41,6 +65,7 @@ export class NewsController {
     };
     return await this.newsService.getNews(filters);
   }
+
   @Get(':authorId/author')
   async getNewsByAuthorId(@Param('authorId') authorId: string) {
     return await this.newsService.getNewsByAuthorId(authorId);

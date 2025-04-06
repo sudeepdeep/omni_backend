@@ -21,12 +21,20 @@ export class NewsService {
       author: data.author || 'Anonymous',
       authorId: data.authorId || '',
       imageUrl: data.imageUrl || [],
-      publishedDate: moment().format('YYYY-MM-DD'),
-      createdAt: moment().format('YYYY-MM-DD'),
-      modifiedAt: moment().format('YYYY-MM-DD'),
+      publishedDate: moment().format('YYYY-MM-DD:HH:mm:ss'),
+      createdAt: moment().format('YYYY-MM-DD:HH:mm:ss'),
+      modifiedAt: moment().format('YYYY-MM-DD:HH:mm:ss'),
     });
 
     return await news.save();
+  }
+
+  async editNews(id: any, data: any) {
+    return await this.model.findByIdAndUpdate(id, data, { new: true });
+  }
+
+  async deleteNews(id: any) {
+    return await this.model.findByIdAndDelete(id);
   }
 
   async getNews(filter: any) {
@@ -71,6 +79,8 @@ export class NewsService {
     const limit = parseInt(filter.limit) || 10; // Default limit: 10
     const offset = parseInt(filter.offset) || 0; // Default offset: 0
 
+    query.isArchived = false;
+
     const totalCount = await this.model.countDocuments(query); // Get total count
 
     const news = await this.model
@@ -91,7 +101,7 @@ export class NewsService {
       offset,
       results: news,
     };
-    return await this.model.find(query).sort({ createdAt: -1 }).exec();
+    // return await this.model.find(query).sort({ createdAt: -1 }).exec();
   }
 
   async getNewsByAuthorId(authorId: any) {
