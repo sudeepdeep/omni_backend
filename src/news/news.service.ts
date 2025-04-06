@@ -105,7 +105,14 @@ export class NewsService {
   }
 
   async getNewsByAuthorId(authorId: any) {
-    const authorNews = await this.model.find({ authorId: authorId });
+    const authorNews = await this.model
+      .find({ authorId: authorId })
+      .populate({
+        path: 'authorId',
+        select: 'username email firstName lastName profileUrl role',
+      })
+      .sort({ createdAt: -1 })
+      .exec();
     return authorNews;
   }
 
