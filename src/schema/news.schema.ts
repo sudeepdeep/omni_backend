@@ -77,8 +77,8 @@ export class News {
   @Prop({ default: 'Anonymous' })
   author?: string;
 
-  @Prop({ default: false })
-  isArchived?: boolean;
+  @Prop({ default: 'false' })
+  isArchived?: string;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

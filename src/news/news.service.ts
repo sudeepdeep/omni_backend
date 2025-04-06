@@ -79,7 +79,7 @@ export class NewsService {
     const limit = parseInt(filter.limit) || 10; // Default limit: 10
     const offset = parseInt(filter.offset) || 0; // Default offset: 0
 
-    query.isArchived = false;
+    query.isArchived = 'false';
 
     const totalCount = await this.model.countDocuments(query); // Get total count
 
