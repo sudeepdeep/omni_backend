@@ -15,8 +15,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
   async signIn(body: LoginDto) {
-    const { username, password } = body;
-    const user = await this.model.findOne({ username: username });
+    const { email, password } = body;
+    const user = await this.model.findOne({ email: email });
     if (!user) {
       throw new UnprocessableEntityException('No such user found');
     }
@@ -35,8 +35,8 @@ export class AuthService {
   }
 
   async signUp(body: CreateUserDto) {
-    const { username, email } = body;
-    let user = await this.model.findOne({ username: username, email: email });
+    const { email } = body;
+    let user = await this.model.findOne({ email: email });
     if (user) {
       throw new UnprocessableEntityException(
         'User with the given username/email already exists',
@@ -45,7 +45,7 @@ export class AuthService {
 
     //create user
     user = await this.model.create(body);
-    const payload = { sub: user._id, username: username };
+    const payload = { sub: user._id, email: email };
     return {
       access_token: await this.jwtService.signAsync(payload),
       userId: user._id,

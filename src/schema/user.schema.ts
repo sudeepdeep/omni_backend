@@ -9,10 +9,10 @@ export class User {
   @Prop({ required: true })
   lastName: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop()
   username: string;
 
-  @Prop()
+  @Prop({ required: true })
   password: string;
 
   @Prop({ required: true, unique: true })
@@ -47,6 +47,12 @@ export class User {
 
   @Prop()
   bio: string;
+
+  @Prop()
+  premiumUser?: string;
+
+  @Prop({ default: [] })
+  purchasedItems?: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

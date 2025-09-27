@@ -11,7 +11,6 @@ export class UserService {
   constructor(@InjectModel(User.name) private readonly model: Model<IUser>) {}
   async createUser(data: CreateUserDto) {
     const existingUser = await this.model.findOne({
-      username: data.username,
       email: data.email,
     });
     if (existingUser) {
