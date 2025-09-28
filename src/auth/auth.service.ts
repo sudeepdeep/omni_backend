@@ -60,6 +60,8 @@ export class AuthService {
       //create an user
       const data = {
         email: email,
+        firstName: payload.given_name || '',
+        lastName: payload.family_name || '',
         username: email.split('@')[0],
         authSource: 'google',
       };
@@ -67,7 +69,7 @@ export class AuthService {
         const userCreated = await this.model.create(data);
         const tokenData = {
           sub: userCreated._id,
-          username: userCreated.username,
+          email: userCreated.email,
         };
 
         return {
@@ -76,10 +78,11 @@ export class AuthService {
         };
       } catch (err) {
         console.log(err);
+        throw new UnprocessableEntityException('Failed to create user');
       }
     } else {
       //login user
-      const tokenData = { sub: user._id, username: user.username };
+      const tokenData = { sub: user._id, email: user.email };
       return {
         access_token: await this.jwtService.signAsync(tokenData),
         userId: user._id,
