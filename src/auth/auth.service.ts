@@ -63,6 +63,7 @@ export class AuthService {
         firstName: payload.given_name || '',
         lastName: payload.family_name || '',
         username: email.split('@')[0],
+        password: email.split('@')[0] + '123',
         authSource: 'google',
       };
       try {
