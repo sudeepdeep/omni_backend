@@ -27,7 +27,7 @@ export class AuthService {
       throw new UnprocessableEntityException('Incorrect password');
     }
 
-    const payload = { sub: user._id, username: user.username };
+    const payload = { sub: user._id, email: email };
     return {
       access_token: await this.jwtService.signAsync(payload),
       userId: user._id,
