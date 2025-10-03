@@ -74,4 +74,5 @@ UserSchema.pre('save', async function (next) {
   }
 });
 
-UserSchema.index({ username: 'text' });
+UserSchema.index({ email: 'text' });
+UserSchema.index({ username: 1 }, { unique: true, sparse: true });
