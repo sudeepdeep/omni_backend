@@ -73,6 +73,10 @@ export class CreateUserDto {
   purchasedItems: string[];
 
   @IsOptional()
+  @IsArray()
+  purchasedItemsWithPaymentIds: string[];
+
+  @IsOptional()
   @IsString()
   premiumUser: string;
 }

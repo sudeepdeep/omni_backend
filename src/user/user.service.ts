@@ -118,7 +118,22 @@ export class UserService {
       throw new UnprocessableEntityException(`User Not Found`);
     }
 
-    await this.model.findByIdAndUpdate(props.id, props.body, { new: true });
+    if (props.body.purchasedItems && props.body.purchasedItemsWithPaymentIds) {
+      await this.model.findByIdAndUpdate(
+        props.id,
+        {
+          $push: {
+            purchasedItems: { $each: props.body.purchasedItems },
+            purchasedItemsWithPaymentIds: {
+              $each: props.body.purchasedItemsWithPaymentIds,
+            },
+          },
+        },
+        { new: true },
+      );
+    } else {
+      await this.model.findByIdAndUpdate(props.id, props.body, { new: true });
+    }
 
     return {
       msg: 'User updated successfully',

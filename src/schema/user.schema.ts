@@ -53,6 +53,9 @@ export class User {
 
   @Prop({ default: [] })
   purchasedItems?: string[];
+
+  @Prop({ default: [] })
+  purchasedItemsWithPaymentIds?: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
